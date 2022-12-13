@@ -1,0 +1,28 @@
+#########################################################
+#Created by Matt Sokolow								#
+#For hear.com											#
+#Creation date: 20-Dec-2021								#
+#Purpose: to parse SF records for credit card numbers	#
+#########################################################
+
+#From an elevated PowerShell window
+
+#First, change the ExecutionPolicy:
+Set-ExecutionPolicy Unrestricted
+
+#Change directory to where the below PS1 script is stored. Ensure the file to be parsed, and the "PatternsFile" are located in the same directory on your machine. In my case, it is D:\SF_Records. 
+cd d:\sf_records
+
+#Then, run the following script:
+.\Search-TextLog.ps1 -Path AllSFOpps20211220.csv -PatternsFile patterns2.txt -ShowMatchedLines
+
+#Customizations
+#change -PatternsFile to be either patternKR.txt (Korea specific credit cards), or patterns2.txt (all other credit cards in one patterin file), or whatever your patterns file is.
+#patterns2.txt has been found to be highly accurate, with very low false positives. Covers MC, Visa, Amex, JCB, Discover, and Diner's Club
+#change -Path to the file to be parsed. Can be nearly any document file type: CSV, TXT, LOG, etc.
+#add -ShowMatchedLines to show the raw data. Remove the flag to show a summary of matches. Start without this flag, see what the summary catches, THEN add the flag and re-run if the totals are manageable (<2K).
+
+#once you run the command once, subsequent executions in the same PowerShell window will run faster each time.
+#the length of time it takes to run is completely dependant on the CPU in your machine.
+
+#use a program like Modern CSV to view the large CSV files created by Dataloader to get the SF ID for a given record when -ShowMatchedLines does not provide it. They will be too large for Excel or a text viewer. You can use Modern CSV to seach for the matched credit card number to obtain the corresponding SF record ID. Then, bring up said record, use Salesforce Inspector to "view all data", then used Ctrl+F to open the browser search and paste the credit card number into the search field. Edit said field(s), and Save the changes.
